@@ -1,0 +1,13 @@
+package main
+
+
+type MyStruct {
+	Name string
+	Age  int
+}
+
+
+func main () {
+	m := MyStruct {"Gareth", 51)
+	fmt.Printf("struct is %v", m)
+}

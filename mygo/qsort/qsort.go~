@@ -1,0 +1,62 @@
+package qsort
+
+import (
+	"fmt"
+)
+
+func QuickSort(nn []int) error {
+	return nil
+}
+
+func Partition(nn []int, lo int, hi int) (int, error) {
+	if lo < 0 {
+		return 0, fmt.Errorf("Lo : %d is less than zero", lo)
+	}
+	if hi >= len(nn) {
+		return 0, fmt.Errorf("Hi : %d exceeds slice length : %d", hi, len(nn))
+	}
+
+	if lo > hi {
+		return 0, fmt.Errorf("Lo : %d is greater than Hi : %d", lo, hi)
+	}
+
+	return 0, nil
+
+	pivot := nn[hi]
+	fmt.Printf("Pivot is %d\n", pivot)
+	i := lo - 1
+	fmt.Printf("i  = %d\n", i)
+	for j := lo; j <= hi-1; j++ {
+		if nn[j] <= pivot {
+			i++
+			swap(nn, i, j)
+			fmt.Printf("i: %d, j: %d, nn[j]  : %d\n", i, j, nn[j])
+		}
+
+	}
+	swap(nn, i, hi)
+	return i, nil
+}
+
+func swap(nn []int, i int, j int) error {
+	if i < 0 {
+		return fmt.Errorf("Index %d is less than zero", i)
+	}
+
+	if j < 0 {
+		return fmt.Errorf("Index %d is less than zero", j)
+	}
+
+	if i > len(nn)-1 {
+		return fmt.Errorf("INdex %d is greater than %d", i, len(nn)-1)
+	}
+
+	if j > len(nn)-1 {
+		return fmt.Errorf("INdex %d is greater than %d", j, len(nn)-1)
+	}
+
+	t := nn[i]
+	nn[i] = nn[j]
+	nn[j] = t
+	return nil
+}

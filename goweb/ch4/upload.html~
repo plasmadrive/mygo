@@ -1,0 +1,12 @@
+<html>
+  <head>
+    
+  </head>
+
+  <body>
+    <form action="http://localhost:8080/multipartform?hello=world&number=123" method="post" enctype="multipart/form-data">
+      
+      <input type="submit" value="">
+    </form>
+  </body>
+</html>

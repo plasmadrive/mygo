@@ -1,0 +1,30 @@
+package main
+
+import (
+	"encoding/csv"
+	"fmt"
+	"os"
+	"strconv"
+)
+
+
+type Post struct {
+	Id int
+	Content string
+	Author string
+}
+
+func main() {
+	csvFile,err := os.Create("posts.csv")
+	if err != nil {
+		panic(err)
+	}
+	defer csv.Close()
+}
+
+
+allPosts := []Post {
+	Post{Id: 1, Content: "Hello,World", Author: "Sau Song"},
+	Post{Id: 2, Content: "Hello,Baby", Author: "Gareth"}, 
+	Post{Id: 3, Content: "Goodbye M", Author: "Sandra"}, 
+}
