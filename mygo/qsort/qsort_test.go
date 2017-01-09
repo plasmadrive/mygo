@@ -2,6 +2,7 @@ package qsort
 
 import (
 	"testing"
+	"math/rand"
 )
 
 func TestQSort(t *testing.T) {
@@ -17,6 +18,27 @@ func TestQSort(t *testing.T) {
 		}
 	}
 
+}
+
+func TestQuickSortParameters(t *testing.T) {
+	// test lo < 0
+	nn := []int {3,2,1}
+	var (
+		err error
+	)
+	err = QuickSort(nn,-1,2)
+	if err == nil {
+		t.Errorf("QuickSort should have returned an error for lo value -1")
+	}
+
+	err = QuickSort(nn,0,3)
+	if err == nil {
+		t.Errorf("Quicksort shouldh have returned an error for hi value 3")
+	}
+
+	
+
+	
 }
 
 func TestPartition(t *testing.T) {
@@ -38,6 +60,27 @@ func TestPartition(t *testing.T) {
 		}
 	}
 
+}
+
+func BenchmarkPartition(b *testing.B) {
+	nn := generateSlice(100)
+	b.ResetTimer()
+	for i :=0; i< b.N; i++ {
+		Partition(nn,0,99)
+	}
+}
+
+func generateSlice(len int) []int {
+	const maxelementsize int = 1000
+	var nn []int
+	if len > 0 {
+		rand.Seed(1)
+		nn = make([]int,len)
+		for i :=0;i<len;i++ {
+			nn[i] = rand.Intn(maxelementsize)
+		}
+	}
+	return nn
 }
 
 func TestPartitionLoGreaterThanHi(t *testing.T) {
