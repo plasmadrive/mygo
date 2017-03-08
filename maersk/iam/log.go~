@@ -1,0 +1,74 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
+
+var w io.Writer
+
+const (
+	log_json = 0
+	log_line = 1
+)
+
+type requestInfo struct {
+	Path    string            `json:"path"`
+	Headers map[string]string `json:"headers"`
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
+	headers := make(map[string]string)
+	for header, _ := range r.Header {
+		headers[header] = r.Header.Get(header)
+	}
+
+	//	fmt.Printf("Path : %s, Headers : %v", path, headers)
+	reqInfo := requestInfo{Path: path, Headers: headers}
+
+	log(&reqInfo, log_json)
+}
+
+func log(rInf *requestInfo, lt int) {
+	switch {
+	case lt == log_json:
+		bs, err := json.Marshal(rInf)
+		if err != nil {
+			fmt.Printf("Error marshalling %v\n", rInf)
+		} else {
+			w.Write(bs)
+		}
+	case lt == log_line:
+		logline := fmt.Sprintf("Path : %s Headers : [", rInf.Path)
+		for name, header := range reqInfo.Headers {
+			lt = append(lt, fmt.Sprintf("%s : %s,", name, header))
+		}
+		lt = append(lt, "]")
+		fmt.Println(lt)
+	}
+
+}
+
+func main() {
+	server := &http.Server{Addr: ":8080"}
+	flName := "/var/log/messages"
+	fl, err := os.Open(flName)
+	if err == nil {
+		fmt.Println("Successfully opened /var/log/messages")
+		fmt.Println("Opening a multiwriter to wrie to both Stdout and /var/log/messages")
+		w = io.MultiWriter(os.Stdout, fl)
+	} else {
+		fmt.Printf("Error opening /var/log/messages %v\n", err)
+		fmt.Println("Only logging to Stdout")
+		w = os.Stdout
+
+	}
+
+	defer fl.Close()
+	http.HandleFunc("/", handler)
+	server.ListenAndServe()
+}

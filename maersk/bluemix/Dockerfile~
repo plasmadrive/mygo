@@ -1,0 +1,5 @@
+FROM golang
+ADD . /go/src/maersk/bluemix
+RUN go install maersk/bluemix
+ENTRYPOINT /go/bin/bluemix
+EXPOSE 8080
