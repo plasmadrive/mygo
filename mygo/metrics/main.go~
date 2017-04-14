@@ -1,0 +1,22 @@
+package main
+
+import (
+	"math/rand"
+	"net/http"
+)
+
+var (
+	s rand.Source
+	r rand.Rand
+)
+
+func handle(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func main() {
+
+	s = rand.NewSource()
+	r = s.New()
+
+}
