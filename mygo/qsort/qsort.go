@@ -13,25 +13,26 @@ func QuickSort(nn []int, lo int, hi int) error {
 	if lo < 0 {
 		return fmt.Errorf("Lo value : %d cannot be less than zero", lo)
 	}
-	if hi > len(nn) {
+	if hi >= len(nn) {
 		return fmt.Errorf("Hi value : %d cannot be greater than or equal to %d", hi, len(nn))
 	}
 
+	var (
+		err error
+		p   int
+	)
+	
 	if lo < hi {
-		var err error
-		p, err := Partition(nn, lo, hi)
-		if err != nil {
-			return err
-		}
+
+		p, err = Partition(nn, lo, hi)
+	
 
 		err = QuickSort(nn, lo, p-1)
-		if err != nil {
-			return err
-		}
+	
 		err = QuickSort(nn, p+1, hi)
-		return err
+
 	}
-	return nil
+	return err
 }
 
 func Partition(nn []int, lo int, hi int) (int, error) {
